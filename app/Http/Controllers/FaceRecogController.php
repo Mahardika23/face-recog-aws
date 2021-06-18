@@ -54,7 +54,7 @@ class FaceRecogController extends Controller
             } else {
                 $numOfFaces = count($faceDetails);
 
-                return "Number of Faces Detected:" . $numOfFaces;
+                return "One or more Face Detected \n Number of Faces Detected:" . $numOfFaces;
             }
         } else {
             $results = $client->detectText(['Image' => ['Bytes' => $bytes], 'MinConfidence' => intval($request->input('confidence'))])['TextDetections'];
