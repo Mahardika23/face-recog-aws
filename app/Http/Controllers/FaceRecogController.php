@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Aws\Rekognition\RekognitionClient;
+use Aws\Sts\StsClient;
 
 class FaceRecogController extends Controller
 {
@@ -13,7 +14,15 @@ class FaceRecogController extends Controller
     }
     public function submitForm(Request $request)
     {
+        // $stsClient = new StsClient([
+        //     'profile' => 'default',
+        //     'region' => 'us-east-2',
+        //     'version' => '2011-06-15'
+        // ]);
+        // $sessionToken = $stsClient->getSessionToken();
+        // dd($stsClient);
         $client = new RekognitionClient([
+            'profile'   => 'project1',
             'region'    => env('AWS_DEFAULT_REGION'),
             'version'   => 'latest'
         ]);
@@ -31,24 +40,9 @@ class FaceRecogController extends Controller
                 'Attributes' => array('ALL')
                 )
             );
-            // if (array_search('Explicit Nudity', array_column($results, 'Name'))) {
-            //     $message = 'This photo may contain nudity';
-            // } else {
-            //     $message = 'This photo does not contain nudity';
-            // }
-
+          
             $faceDetails = $results['FaceDetails'];
-            //         print 'People: Image position and estimated age' . PHP_EOL;
-            //         for ($n=0;$n<sizeof($results['FaceDetails']); $n++) {
-            //             print 'Position: ' . $results['FaceDetails'][$n]['BoundingBox']['Left'] . " "
-            //   . $results['FaceDetails'][$n]['BoundingBox']['Top']
-            //   . PHP_EOL
-            //   . 'Age (low): '.$results['FaceDetails'][$n]['AgeRange']['Low']
-            //   .  PHP_EOL
-            //   . 'Age (high): ' . $results['FaceDetails'][$n]['AgeRange']['High']
-            //   .  PHP_EOL . PHP_EOL;
-            // }
-
+          
             if (empty($faceDetails)) {
                 return "NO Face Detected";
             } else {
